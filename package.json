@@ -1,0 +1,26 @@
+{
+  "name": "expense-tracker",
+  "version": "1.0.0",
+  "description": "This is a web application developed using MERN stack to track personal expenses using various data analytics tools and project future expenditures",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rohith-Kumar-Boddu/expense-tracker.git"
+  },
+  "author": "Rohith Kumar Boddu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rohith-Kumar-Boddu/expense-tracker/issues"
+  },
+  "homepage": "https://github.com/Rohith-Kumar-Boddu/expense-tracker#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
