@@ -1,0 +1,50 @@
+-- Expense Tracker PostgreSQL schema
+-- Run: psql -U USER -d DATABASE -f schema.sql
+
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  name TEXT,
+  currency TEXT DEFAULT 'USD',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS accounts (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  type TEXT NOT NULL,
+  balance DOUBLE PRECISION DEFAULT 0,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS categories (
+  id SERIAL PRIMARY KEY,
+  name TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS expenses (
+  id SERIAL PRIMARY KEY,
+  amount DOUBLE PRECISION NOT NULL,
+  description TEXT,
+  date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
+  account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE RESTRICT
+);
+
+CREATE TABLE IF NOT EXISTS transactions (
+  id SERIAL PRIMARY KEY,
+  amount DOUBLE PRECISION NOT NULL,
+  description TEXT,
+  date TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  account_id INTEGER NOT NULL REFERENCES accounts(id) ON DELETE CASCADE
+);
+
+-- Indexes
+CREATE INDEX IF NOT EXISTS idx_expenses_user_id ON expenses(user_id);
+CREATE INDEX IF NOT EXISTS idx_expenses_account_id ON expenses(account_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_account_id ON transactions(account_id);
